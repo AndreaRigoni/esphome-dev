@@ -16,70 +16,25 @@ noinst_PROGRAMS = autoconf-bootstrap-example
 autoconf_bootstrap_example_SOURCES = main.cpp
 
 
+DOWNLOADS += esphome
 
-DOCKER_TARGETS = prova-%
+esphome: ##@esp download esphome src
 
-
-DIRECTORIES = cntmp
-
-prova-%: DOCKER_CONTAINER = prova
-prova-%: DOCKER_IMAGE     = debian:latest
-
-prova-init: DOCKER_CONTAINER = prova
-prova-init: DOCKER_URL = $(srcdir)/docker_build
-prova-init: DOCKER_DOCKERFILE = $(srcdir)/docker_build/Dockerfile-git
-prova-init: DOCKER_MOUNTS = cntmp:/usr/local
-prova-init: 
-	@ :;
-
-prova-shell: 
-	@ /bin/bash
-
-
-##    .########.########.##....##..######...#######..########..########.##........#######..##......##  
-##    ....##....##.......###...##.##....##.##.....##.##.....##.##.......##.......##.....##.##..##..##  
-##    ....##....##.......####..##.##.......##.....##.##.....##.##.......##.......##.....##.##..##..##  
-##    ....##....######...##.##.##..######..##.....##.########..######...##.......##.....##.##..##..##  
-##    ....##....##.......##..####.......##.##.....##.##...##...##.......##.......##.....##.##..##..##  
-##    ....##....##.......##...###.##....##.##.....##.##....##..##.......##.......##.....##.##..##..##  
-##    ....##....########.##....##..######...#######..##.....##.##.......########..#######...###..###.  
-
-DOWNLOADS = tensorflow
-
-tensorflow: ##@ext tensorflow
-tensorflow_URL    = https://github.com/tensorflow/tensorflow.git
-tensorflow_BRANCH = master
-
-# python packages needed for tf
-PYTHON_PACKAGES = pip six numpy wheel mock
-tf_DOCKER_IMAGE = tensorflow/tensorflow:nightly-devel-py3
-
-DOCKER_TARGETS += tf-%
-tf-init: ##@tf build process
-tf-init: DOCKER_IMAGE = $(tf_DOCKER_IMAGE)
-tf-init: DOCKER_CONTAINER = tf-build
-tf-init: | tensorflow pip-install
-	@ cd tensorflow;
-
-tf-%: export DOCKER_CONTAINER = tf-build
-
-tensorflow/.tf_configure.bazelrc: | tf-init
-	@ cd tensorflow; ./configure
-
-tf-configure: tensorflow/.tf_configure.bazelrc
-
-tf-build: tf-configure | tf-init
-	@ cd tensorflow; bazel build --config=opt //tensorflow/tools/pip_package:build_pip_package
-
-tf-shell:
-	/bin/bash
+esphome_URL = https://github.com/andrearigoni/esphome.git
+esphome_BRANCH = dev
 
 
 
+esp-install: ##@esp install
+	cd esphome; python setup.py build; python setup.py install --user
+
+esp-clean: ##@esp clean
+	cd esphome; python setup.py clean
 
 
 
-
+esp-dashboard: ##@esp dashboard
+	esphome ./config dashboard
 
 
 
