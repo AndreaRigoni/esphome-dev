@@ -7,8 +7,8 @@ Makefile.in
 /configure
 
 /downloads
-/.
-/.
 
-/conf/ide
-/conf/python
+conf/python/site-packages
+conf/ide/vs_code
+
+
