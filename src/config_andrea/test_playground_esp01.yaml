@@ -1,0 +1,48 @@
+esphome:
+  name: esp01_test_playground
+  platform: ESP8266
+  board: esp01_1m
+
+wifi:
+  ssid:     !secret wifi_ssid
+  password: !secret wifi_pass
+  power_save_mode: HIGH
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+# web_server:
+#   port: 80
+
+binary_sensor:
+  - platform: status
+    name: "Esp01 playground - status"
+
+
+switch:
+  - platform: orbit_water_valve
+    name: "Esp01 playground - orbit valve"
+    pin_a: GPIO2
+    pin_b: GPIO0
+    
+    
+text_sensor:    
+  - platform: template
+    name: Orbit Valve Time
+    id: orbit_valve_time_sensor
+    # on_value:
+    #   then:
+    #     - text_sensor.template.publish:
+    #       id: orbit_valve_time
+    lambda: |-
+      return id(homeassistant_time).now().strftime("%Y-%m-%d %H:%M");
+
+# Time based automations.
+time:
+  - platform: homeassistant
+    id: homeassistant_time

@@ -1,0 +1,38 @@
+esphome:
+  name: citofono
+  platform: ESP8266
+  board: esp01_1m
+
+wifi:
+  ssid:     !secret wifi_ssid
+  password: !secret wifi_pass
+  
+#   # Enable fallback hotspot (captive portal) in case wifi connection fails
+#   ap:
+#     ssid: "Citofono Fallback Hotspot"
+#     password: "qq1ww2ee3rr4tt5yy6uu7ii8oo"
+
+# captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  password: !secret api_passwd
+  
+ota:
+  password: !secret ota_passwd
+
+web_server:
+  port: 80
+
+binary_sensor:
+  - platform: status
+    name: "SW Portone Status"
+
+switch:
+  - platform: gpio
+    name: "SW Portone condominio"
+    pin: GPIO3
+      

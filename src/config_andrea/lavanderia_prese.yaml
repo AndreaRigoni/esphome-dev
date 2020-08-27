@@ -1,0 +1,58 @@
+esphome:
+  name: lavanderia_prese
+  platform: ESP8266
+  board: esp01_1m
+
+
+wifi:
+  ssid:     !secret wifi_ssid
+  password: !secret wifi_pass
+  #use_address:  test01.local
+  power_save_mode: HIGH
+  manual_ip:
+    static_ip: 192.168.1.62
+    gateway: 192.168.1.254
+    subnet: 255.255.255.0
+
+# Enable Home Assistant API
+api:
+  password: !secret api_passwd
+  
+ota:
+  password: !secret ota_passwd
+
+# Example configuration entry
+# Disable logging over USB
+logger:
+  baud_rate: 0
+
+
+switch:
+  - platform: gpio
+    name: "LAUNDRY AC Switch"
+    pin: GPIO12
+
+uart:
+  rx_pin: RX
+  baud_rate: 4800
+
+sensor:
+  - platform: cse7766
+    current:
+      name: "LAUNDRY AC Current"
+    voltage:
+      name: "LAUNDRY AC Voltage"
+    power:
+      name: "LAUNDRY AC Power"
+      
+  - platform: dht
+    model: DHT11
+    pin:
+      number: GPIO5
+      mode: INPUT
+      # inverted: True
+    temperature:
+      name: "Alice Room Temperature"
+    humidity:
+      name: "Alice Room Humidity"
+    update_interval: 30s

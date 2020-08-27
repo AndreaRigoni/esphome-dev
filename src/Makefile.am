@@ -1,19 +1,4 @@
 include $(top_srcdir)/Common.mk
-include $(top_srcdir)/conf/kscripts/tensorflow.mk
-
-SUBDIRS = sh_template parse_examples project_variables mds_example
-
-if ENABLE_NODEJS
-SUBDIRS += nodejs
-endif
-
-if ENABLE_QT
-SUBDIRS += qt_example
-endif
-
-bin_PROGRAMS = autoconf-bootstrap-example
-noinst_PROGRAMS = autoconf-bootstrap-example
-autoconf_bootstrap_example_SOURCES = main.cpp
 
 
 DOWNLOADS += esphome
@@ -24,17 +9,44 @@ esphome_BRANCH = dev
 
 export EXTRA_COMPONENTS_PATH = $(abs_top_builddir)/src/rfx_components
 export PLATFORMIO_LIB_EXTRA_DIRS = $(abs_top_builddir)/src/libs
+export PYTHONPATH = $(abs_top_builddir)/src/esphome
 
-esp-install: ##@esp install
-	cd esphome; python setup.py build; python setup.py install --user
+PYTHON_REQUIREMENTS = esphome/requirements.txt
+
+CONFIG_PATH  = config_andrea
+CONFIG_FILES = $(wildcard $(CONFIG_PATH)/*.yaml)
+CONFIG       = $(notdir $(firstword $(CONFIG_FILES)))
+
+list: _item = $(foreach x,$1,echo "|  - $x";)
+list: ##@esp list of possible config files
+	@ echo ",----------------------------------------------";\
+	  $(call _item,$(notdir $(CONFIG_FILES))) \
+	  echo "|";\
+	  echo "| current config: CONFIG=$(CONFIG)"; \
+	  echo "|";\
+	  echo "\`----------------------------------------------";
+
+
+$(PYTHON_USERBASE)/bin/esphome: esp.py
+	$(INSTALL) $< $@
+
+esp-build: ##@esp build
+esp-build: pip-install $(PYTHON_USERBASE)/bin/esphome
+	$(PYTHON) esphome/setup.py build;
 
 esp-clean: ##@esp clean
-	cd esphome; python setup.py clean
+	$(PYTHON) esphome/setup.py clean
 
 esp-dashboard: ##@esp dashboard
-	esphome ./config dashboard
+	$(PYTHON) esp.py $(CONFIG_PATH) dashboard
 
+esp-: ##@esp command: pass config as CONFIG=
+esp-%:
+	$(PYTHON) esp.py $(CONFIG_PATH)/$(CONFIG) $*
 
+esp-help: ##@esp command help
+	$(PYTHON) esp.py -h
+	
 
 ## //////////////////////////////////////////////////////////////////////
 ## //  LIBS   ///////////////////////////////////////////////////////////
@@ -49,10 +61,6 @@ esp_ilight_DIR = libs/ESPiLight
 
 esp-ilight-build: ##esp-ilight
 	make -C libs/ESPiLight clean all
-
-
-
-
 
 DOWNLOADS += esp-idf
 esp_idf_URL = https://github.com/espressif/esp-idf.git

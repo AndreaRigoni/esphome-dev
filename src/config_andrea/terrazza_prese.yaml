@@ -1,0 +1,49 @@
+esphome:
+  name: terrazza_prese
+  platform: ESP8266
+  board: esp01_1m
+
+wifi:
+  ssid:     !secret wifi_ssid
+  password: !secret wifi_pass
+  # use_address:  terrazza_prese.local
+  power_save_mode: HIGH
+  manual_ip:
+    static_ip: 192.168.1.63
+    gateway: 192.168.1.254
+    subnet: 255.255.255.0
+  
+# Enable Home Assistant API
+api:
+  password: !secret api_passwd
+  
+ota:
+  password: !secret ota_passwd
+
+
+# Example configuration entry
+# Disable logging over USB
+logger:
+  baud_rate: 0
+
+switch:
+  - platform: gpio
+    name: "Terrazza Prese"
+    pin: GPIO12
+
+uart:
+  rx_pin: RX
+  baud_rate: 4800
+
+sensor:
+  - platform: cse7766
+    current:
+      name: "Terrazza Prese Current"
+    voltage:
+      name: "Terrazza Prese Voltage"
+    power:
+      name: "Terrazza Prese Power"
+
+# Example configuration entry
+# web_server:
+#   port: 80

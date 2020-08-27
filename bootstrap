@@ -11,9 +11,9 @@ fi
 
 aclocal -I ./conf/m4 --install 
 
-autoheader
+# autoheader
 
-libtoolize -c
+# libtoolize -c
 
 automake --add-missing --copy
 
