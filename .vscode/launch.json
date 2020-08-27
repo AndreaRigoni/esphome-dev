@@ -1,0 +1,48 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "REMOTE: Python",
+            "type": "python",
+            "request": "attach",
+            "host": "${env:REMOTE_DEBUG_HOST}",
+            "port": "${env:REMOTE_DEBUG_PYTHON_PORT}",
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}",
+                    "remoteRoot": "${workspaceFolder}"
+                }
+            ]
+        },
+        {
+            "name": "REMOTE: Gdb python",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "python",
+            "miDebuggerServerAddress": "${env:REMOTE_DEBUG_HOST}:${env:REMOTE_DEBUG_GDB_PORT}",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb"
+        },
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        }
+    ],
+    // "compounds": [
+    //     {
+    //       "name": "PyGDB",
+    //       "configurations": ["5677","5678"],
+    //       // "preLaunchTask": "${defaultBuildTask}" //
+    //     }
+    //   ]
+}
