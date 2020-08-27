@@ -67,4 +67,3 @@ esp_idf_URL = https://github.com/espressif/esp-idf.git
 esp_idf_BRANCH = master
 
 
-
