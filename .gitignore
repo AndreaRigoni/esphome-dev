@@ -11,3 +11,4 @@ Makefile.in
 
 conf/python/*
 conf/ide/*
+build/
