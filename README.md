@@ -10,7 +10,7 @@ Mildstone is currently supporting ESP development but more high level boards wil
 Configuring a new repository to start playing with such tools the process is relatively simple:
 
 <pre>
-git clone https://gitlab.igi.cnr.it/rigoni/mildstone.git
+git clone https://gitlab.igi.cnr.it/mildstone/mildstone.git
 cd autoconf-bootstrap
 ./bootstrap
 ./configure --enable-kconfig
