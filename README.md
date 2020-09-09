@@ -1,20 +1,19 @@
-# autoconf-bootstrap
-Base setup for autoconf distribution
+# Mildstone
+Mildstone project home
 
-![](https://github.com/AndreaRigoni/autoconf-bootstrap/workflows/bootstrap/badge.svg)
+Mildstone ( pietra tenera in italiano ) is a collection of software tools that aim at organizing a central repository for the configuration and maintainment of embedded CoDAS devices.
+The primary goal of the project is to provide a place where harware design and software code meet together in a single uniform way.
 
-This is a autoconf/automake minimal setup to start a new project. It uses Kconfig integration 
-provided by https://github.com/AndreaRigoni/autoconf-kconfig as a submodule in conf/kconfig
+Mildstone is currently supporting ESP development but more high level boards will be supported soon.
 
-In the following a easy setup procedure:
+
+Configuring a new repository to start playing with such tools the process is relatively simple:
 
 <pre>
-git clone https://github.com/andrearigoni/autoconf-bootstrap.git
+git clone https://gitlab.igi.cnr.it/mildstone/mildstone.git
 cd autoconf-bootstrap
 ./bootstrap
-mkdir build
-cd build
-../configure --enable-kconfig
+./configure --enable-kconfig
 # enjoy
 </pre>
 
